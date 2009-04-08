@@ -31,6 +31,8 @@
 #ifndef TOOLS_DR_HPP_
 #define TOOLS_DR_HPP_
 
+#include <iostream>
+
 #include <DRObject.dr.h>
 
 namespace dr {
