@@ -1,7 +1,10 @@
 /**
  * @file Options.dr.h
+ *
  * @date 2009-03-01
  * @author Alejandro Darío Simi
+ * @copyright 2009 Alejandro Darío Simi
+ * @license GPLv3
  */
 
 /**
@@ -28,13 +31,16 @@
 #ifndef OPTIONS_DR_H_
 #define OPTIONS_DR_H_
 
+#include <DRObject.dr.h>
+
 namespace dr {
+using namespace dr;
 
 /**
  * @todo documentar
  * @brief Options is a manager for parameters.
  */
-class Options {
+class Options : public DRObject {
 	public:
 		Options();
 		virtual ~Options();
