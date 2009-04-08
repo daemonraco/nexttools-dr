@@ -28,9 +28,10 @@
  *
  */
 
-#include <Tools.dr.hpp>
+#include <Tools.dr.h>
 
 namespace dr {
+using namespace dr;
 
 /**
  * @todo documentar
