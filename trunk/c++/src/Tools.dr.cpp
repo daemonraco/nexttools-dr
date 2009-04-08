@@ -1,7 +1,10 @@
 /*
- * @file Tools.dr.hpp
+ * @file Tools.dr.cpp
+ *
  * @date 2009-03-01
  * @author Alejandro Darío Simi
+ * @copyright 2009 Alejandro Darío Simi
+ * @license GPLv3
  */
 
 /**
@@ -25,49 +28,19 @@
  *
  */
 
-#ifndef TOOLS_DR_HPP_
-#define TOOLS_DR_HPP_
+#include <Tools.dr.hpp>
 
 namespace dr {
 
 /**
  * @todo documentar
- * @brief Tools is a singleton that merges all important things
- * and tools.
  */
-class Tools {
-	protected:
-		/**
-		 * This is the pointer to the instance.
-		 */
-		static Tools*	_Instance;
+Tools*	Tools::_Instance = NULL;
 
-	public:
-		/**
-		 * @todo documentar
-		 */
-		virtual ~Tools();
-
-	protected:
-		/**
-		 * This is is the main constructor, it can only be called by
-		 * the class itself, because the class works as a singleton.
-		 */
-		Tools();
-
-	public:
-		/**
-		 * @todo documentar
-		 * @return Return the singleton instance
-		 */
-		static Tools* getInstance() {
-			if (Tools::_Instance == NULL) {
-				Tools::_Instance = new Tools();
-			}
-			return Tools::_Instance;
-		}
-};
-
+Tools::Tools() : DRObject () {
 }
 
-#endif /* TOOLS_DR_HPP_ */
+Tools::~Tools() {
+}
+
+}

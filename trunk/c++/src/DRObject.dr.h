@@ -1,7 +1,10 @@
-/**
- * @file Options.dr.cpp
- * @date 2009-03-01
+/*
+ * @file DRObject.dr.h
+ *
+ * @date 2009-04-07
  * @author Alejandro Darío Simi
+ * @copyright 2009 Alejandro Darío Simi
+ * @license GPLv3
  */
 
 /**
@@ -25,18 +28,17 @@
  *
  */
 
-#include <Options.dr.h>
+#ifndef DROBJECT_DR_H_
+#define DROBJECT_DR_H_
 
 namespace dr {
 
-Options::Options() {
-}
-
-Options::~Options() {
-}
-
-bool Options::load(int counter, char** params) {
+class DRObject {
+	public:
+		DRObject();
+		virtual ~DRObject();
+};
 
 }
 
-}
+#endif /* DROBJECT_DR_H_ */
