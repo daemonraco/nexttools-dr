@@ -27,32 +27,15 @@
 package dr;
 
 /**
- * @todo documentar
- * @brief Tools is a singleton that merges all important things
- * and tools.
+ * @author raco
+ *
  */
-public class Tools extends DRObject {
+public class DRObject {
 	/**
-	 * This is the pointer to the instance. 
+	 * 
 	 */
-	static Tools	_Instance = null;
-
-	/**
-	 * This is is the main constructor, it can only be called by
-	 * the class itself, because the class works as a singleton.
-	 */
-	protected Tools() {
+	public DRObject() {
+		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @todo documentar
-	 * @return Return the singleton instance 
-	 */
-	static public Tools getInstance() {
-		if (Tools._Instance == null) {
-			Tools._Instance = new Tools();
-		}
-
-		return Tools._Instance;
-	}
 }
