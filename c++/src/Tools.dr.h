@@ -1,4 +1,4 @@
-/*
+/**
  * @file Tools.dr.hpp
  *
  * @date 2009-03-01
@@ -28,8 +28,8 @@
  *
  */
 
-#ifndef TOOLS_DR_HPP_
-#define TOOLS_DR_HPP_
+#ifndef __TOOLS_DR_H__
+#define __TOOLS_DR_H__
 
 #include <iostream>
 
@@ -78,4 +78,4 @@ class Tools  : public DRObject {
 
 }
 
-#endif /* TOOLS_DR_HPP_ */
+#endif /* __TOOLS_DR_H__ */

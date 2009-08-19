@@ -1,11 +1,12 @@
 #
 export TARGET_NAME	= nexttools
 export VERSION		= 0.1.0
+export ONLINE_DOCS	= http://docs.daemonraco.com/NextTools/c++
 #
 export TARGET		= lib$(TARGET_NAME).so.$(VERSION)
 #
 export COMPILER		= g++
-export OFLAGS		= -I. -DVERSION="$(VERSION)" -DTARGET="$(TARGET)"
+export OFLAGS		= -I. -DVERSION="$(VERSION)" -DTARGET="$(TARGET)" -DONLINE_DOCS="$(ONLINE_DOCS)"
 export BFLAGS		= -shared
 #
 export SRC_DIR		= $(PWD)/src

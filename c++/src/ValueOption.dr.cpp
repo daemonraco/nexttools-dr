@@ -1,5 +1,7 @@
 /**
-* @file debug.dr.h
+* @file ValueOption.dr.cpp
+*
+* @date 2009-06-15
 * @author Alejandro Darío Simi
 * @copyright 2009 Alejandro Darío Simi
 * @license GPLv3
@@ -26,28 +28,48 @@
 *
 */
 
-#warning "This file is just a develop-time. Please, remove any inclution of this file before releasing your applications."
+#include <ValueOption.dr.h>
+#include <Debug.dr.h>
 
-#ifndef __DEBUG_DR_H__
-#define __DEBUG_DR_H__
+namespace dr {
+using namespace dr;
 
-#define	DBG	fprintf(stderr, "NextTools:DBG\n");
-#define	XDBG(x)	fprintf(stderr, "NextTools:DBG: " #x "\n");
+ValueOption::ValueOption() : Option() {
+}
 
-/**
- * This section contains special stuff for C++.
- * @{
- */
-#ifdef	__cplusplus
+ValueOption::~ValueOption() {
+}
 
-#include <iostream>
+bool ValueOption::check(string command) {
+	bool	out = true;
 
-#define	VDBG(x)		std::cerr << "NextTools:DBG: " <<  (x) << endl;
-#define	XVDBG(x)	std::cerr << "NextTools:DBG: " << #x << ": " <<  (x) << endl;
+	if(!this->needsMore()) {
+		if(out = this->hasCommand(command)) {
+			this->setActivated(true);
+			this->_needsMore = true;
+		}
+	} else {
+		this->_value = command;
+		this->_needsMore = false;
+	}
 
-#endif	// __cplusplus
-/* @} */
+	return out;
+}
 
-#endif /* __DEBUG_DR_H__ */
+string ValueOption::value() {
+	return this->_value;
+}
+
+int ValueOption::valueCollection(vector<string> &values) {
+	int	out = 0;
+	values.clear();
+	if(this->activated() && !this->needsMore()) {
+		values.push_back(this->value());
+		out = 1;
+	}
+	return out;
+}
+
+}
 
 /* The open source means to speak clearly.					*/
