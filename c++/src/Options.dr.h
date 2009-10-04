@@ -32,7 +32,7 @@
 #define __OPTIONS_DR_H__
 
 #include <nexttools/DRObject.dr.h>
-#include <nexttools/Option.dr.h>
+#include <nexttools/options/Option.dr.h>
 
 namespace dr {
 using namespace dr;
@@ -54,24 +54,29 @@ class Options : public DRObject {
 
 	public:
 		/**
-		* @todo documentar
+		 * @param optionName It's the option name.
+		 * @return Returns true only if the option is loaded and it was
+		 * activated.
+		 */
+		virtual bool activated(const string &optionName) const;
+		/**
 		* @return Retuns true where the option is successfully added.
 		*/
-		virtual bool addOption(string name);
+		virtual bool addOption(const string &name);
 		/**
 		* @todo documentar
 		* @param opt @todo documentar
 		* @param name @todo documentar
 		* @return @todo documentar
 		*/
-		virtual bool addOption(string name, Option* opt);
+		virtual bool addOption(const string &name, Option* opt);
 		/**
 		* @todo documentar
 		* @param optionName @todo documentar
 		* @param command @todo documentar
 		* @return @todo documentar
 		*/
-		virtual bool addOptionCommand(string optionName, string command);
+		virtual bool addOptionCommand(const string &optionName, const string &command);
 		/**
 		* @todo documentar
 		* @param counter @todo documentar
@@ -83,13 +88,22 @@ class Options : public DRObject {
 		* @todo documentar
 		* @param command @todo documentar
 		*/
-		virtual void checkCommand(string command);
+		virtual void checkCommand(const string &command);
 		/**
 		* @todo documentar
 		* @param optionName @todo documentar
 		* @return @todo documentar
 		*/
-		virtual Option* getOption(string optionName);
+		virtual Option* getOption(const string &optionName) const;
+		/**
+		 * @return @todo documentar
+		 */
+		virtual string help() const;
+		/**
+		 * @param optionName @todo documentar
+		 * @return @todo documentar
+		 */
+		virtual string helpText(const string &optionName) const;
 		/**
 		 * @todo documentar
 		 * @return @todo documentar
@@ -107,11 +121,22 @@ class Options : public DRObject {
 		*/
 		virtual string programName();
 		/**
+		 * @todo documentar
+		 * @param optionName @todo documentar
+		 * @param text @todo documentar
+		 * @return @todo documentar
+		 */
+		virtual string setHelpText(const string &optionName, const string &text);
+		/**
+		 * Inherited.
+		 */
+		virtual string toString() const throw();
+		/**
 		* @todo documentar
 		* @param optionName @todo documentar
 		* @return @todo documentar
 		*/
-		virtual string value(string optionName);
+		virtual string value(const string &optionName);
 		/**
 		 * @todo documentar
 		 * @param optionName @todo documentar
@@ -119,7 +144,7 @@ class Options : public DRObject {
 		 * @return Return the number of values in the options. Otherwise,
 		 * returns a value lower than 0 (zero).
 		 */
-		virtual int valueCollection(string optionName, vector<string> &values);
+		virtual int valueCollection(const string &optionName, vector<string> &values);
 };
 
 }

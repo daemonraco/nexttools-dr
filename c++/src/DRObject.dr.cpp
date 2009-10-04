@@ -1,4 +1,4 @@
-/*
+/**
  * @file DRObject.dr.cpp
  *
  * @date 2009-04-07
@@ -28,14 +28,48 @@
  *
  */
 
-#include <DRObject.dr.h>
+#include <nexttools/DRObject.dr.h>
+
+#include <string>
+#include <iostream>
+#include <nexttools/DRException.dr.h>
 
 namespace dr {
+using namespace dr;
+using namespace std;
 
 DRObject::DRObject() {
 }
 
 DRObject::~DRObject() {
+}
+
+string DRObject::toString() const throw() {
+	throw DRSubclassResponsabily("'DRObject' does not implements the method 'toString'. It always depends on the child class.");
+	return string("DRObject");
+}
+
+ostream& operator<<(ostream &out, const DRObject &obj) {
+	out << obj.toString();
+	return out;
+}
+
+string& operator+(string &str, const DRObject &obj) {
+	str+=obj.toString();
+	return str;
+}
+
+string& operator+=(string &str, const DRObject &obj) {
+	str = str + obj;
+	return str;
+}
+
+bool operator==(const string &str, const DRObject &obj) {
+	return str == obj.toString();
+}
+
+bool operator==(const DRObject &obj, const string &str) {
+	return str == obj.toString();
 }
 
 }

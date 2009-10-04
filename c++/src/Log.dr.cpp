@@ -1,38 +1,38 @@
 /**
- * @file Log.dr.cpp
- *
- * @date 2009-05-26
- * @author Alejandro Darío Simi
- * @copyright 2009 Alejandro Darío Simi
- * @license GPLv3
- */
+* @file Log.dr.cpp
+*
+* @date 2009-05-26
+* @author Alejandro Darío Simi
+* @copyright 2009 Alejandro Darío Simi
+* @license GPLv3
+*/
 
 /**
- *
- * NextTools - An amount of usefull functions.
- * Copyright (C) 2009 Alejandro Darío Simi
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
+*
+* NextTools - An amount of usefull functions.
+* Copyright (C) 2009 Alejandro Darío Simi
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*
+*/
 
-#include <Log.dr.h>
+#include <nexttools/Log.dr.h>
 
 #include <time.h>
 #include <iostream> //DEBUG
-#include <Debug.dr.h>
+#include <nexttools/Debug.dr.h>
 
 namespace dr {
 
@@ -58,8 +58,16 @@ Log::~Log() {
 
 }
 
+string Log::toString() const throw() {
+	return "dr::LogFactory";
+}
+
 void Log::write(const string &msg) {
-	if(this->_currentLevel <= this->_maximumLevel) {
+	this->write(msg, this->_currentLevel);
+}
+
+void Log::write(const string &msg, const Levels &level) {
+	if(level <= this->_maximumLevel) {
 		if(this->_appendTagname) {
 			this->_output << this->_tag << ": ";
 		}
@@ -155,6 +163,10 @@ Log* LogFactory::_get(const string &tag) {
 	}
 
 	return out;
+}
+
+string LogFactory::toString() const throw() {
+	return "dr::LogFactory";
 }
 
 Log* LogFactory::BuildLog(const string &tag, const Log::Levels level, const string &filepath, const Log::OpenMode mode) {
