@@ -28,35 +28,40 @@
 *
 */
 
-#ifndef __VALUEOPTION_DR_H__
-#define __VALUEOPTION_DR_H__
+#ifndef __MULTIVALUEOPTION_DR_H__
+#define __MULTIVALUEOPTION_DR_H__
 
-#include <nexttools/Option.dr.h>
+#include <nexttools/options/ValueOption.dr.h>
 
 namespace dr {
 using namespace dr;
 
 /**
-* @class ValueOption @todo documentar
+* @todo documentar
 */
-class ValueOption: public dr::Option {
+#define MULTIVALUEOPTION_SEPARATOR	','
+
+/**
+* @class MultivalueOption @todo documentar
+*/
+class MultivalueOption: public dr::ValueOption {
 	protected:
 		/**
 		* @todo documentar
 		*/
-		string	_value;
+		vector<string>	_valueCollection;
 
 	public:
 		/**
 		* @todo documentar
 		* @return @todo documentar
 		*/
-		ValueOption();
+		MultivalueOption();
 		/**
 		* @todo documentar
 		* @return @todo documentar
 		*/
-		virtual ~ValueOption();
+		virtual ~MultivalueOption();
 
 	public:
 		/**
@@ -65,21 +70,29 @@ class ValueOption: public dr::Option {
 		* @return Returns true if the command was accepted by the option.
 		*/
 		virtual bool check(string command);
-
-	public:
 		/**
-		* @return Retunrs the value taken from the commands.
+		* @todo documentar
+		* @param active @todo documentar
+		* @return @todo documentar
 		*/
-		virtual string value();
+		virtual bool setActivated(bool active);
 		/**
-		 * @return returns 1 (one) when the option is activated and needs no
-		 * more params. Otherwise, it returns 0 (zero).
+		* @return returns 1 (one) when the option is activated and needs no
+		* more params. Otherwise, it returns 0 (zero).
+		*/
+		virtual int valueCollection(vector<string> &values) const;
+
+	protected:
+		/**
+		 *
+		 * @param command
+		 * @param auxV
 		 */
-		virtual int valueCollection(vector<string> &values);
+		virtual void splitValues(const string &command, vector<string> &auxV);
 };
 
 }
 
-#endif /* __VALUEOPTION_DR_H__ */
+#endif /* __MULTIVALUEOPTION_DR_H__ */
 
 /* The open source means to speak clearly.					*/

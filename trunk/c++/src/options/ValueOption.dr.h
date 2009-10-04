@@ -28,40 +28,35 @@
 *
 */
 
-#ifndef __MULTIVALUEOPTION_DR_H__
-#define __MULTIVALUEOPTION_DR_H__
+#ifndef __VALUEOPTION_DR_H__
+#define __VALUEOPTION_DR_H__
 
-#include <nexttools/Option.dr.h>
+#include <nexttools/options/Option.dr.h>
 
 namespace dr {
 using namespace dr;
 
 /**
-* @todo documentar
+* @class ValueOption @todo documentar
 */
-#define MULTIVALUEOPTION_SEPARATOR	','
-
-/**
-* @class MultivalueOption @todo documentar
-*/
-class MultivalueOption: public dr::Option {
+class ValueOption: public dr::Option {
 	protected:
 		/**
 		* @todo documentar
 		*/
-		vector<string>	_value;
+		string	_value;
 
 	public:
 		/**
 		* @todo documentar
 		* @return @todo documentar
 		*/
-		MultivalueOption();
+		ValueOption();
 		/**
 		* @todo documentar
 		* @return @todo documentar
 		*/
-		virtual ~MultivalueOption();
+		virtual ~ValueOption();
 
 	public:
 		/**
@@ -71,32 +66,33 @@ class MultivalueOption: public dr::Option {
 		*/
 		virtual bool check(string command);
 		/**
-		* @todo documentar
-		* @param active @todo documentar
-		* @return @todo documentar
-		*/
-		virtual bool setActivated(bool active);
-		/**
 		* @return Retunrs the value taken from the commands.
 		*/
-		virtual string value();
+		virtual string value() const;
 		/**
-		* @return returns 1 (one) when the option is activated and needs no
-		* more params. Otherwise, it returns 0 (zero).
-		*/
-		virtual int valueCollection(vector<string> &values);
+		 * @return returns 1 (one) when the option is activated and needs no
+		 * more params. Otherwise, it returns 0 (zero).
+		 */
+		virtual int valueCollection(vector<string> &values) const;
 
 	protected:
 		/**
-		 *
-		 * @param command
-		 * @param auxV
+		 * @todo documentar
+		 * @return @todo documentar
 		 */
-		virtual void splitValues(const string &command, vector<string> &auxV);
+		virtual string commands();
+		/**
+		 *
+		 * @param value It's the command portion to check.
+		 * @param cmd It's always the command calculated.
+		 * @param prm It's the command extra value. It can be an empty string.
+		 * @return Returns true when the option is divided.
+		 */
+		virtual bool splitCommand(const string &value, string &cmd, string &prm) const;
 };
 
 }
 
-#endif /* __MULTIVALUEOPTION_DR_H__ */
+#endif /* __VALUEOPTION_DR_H__ */
 
 /* The open source means to speak clearly.					*/

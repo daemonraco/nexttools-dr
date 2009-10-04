@@ -1,7 +1,7 @@
 /**
-* @file DRObject.dr.h
+* @file DRException.dr.h
 *
-* @date 2009-04-07
+* @date 2009-09-27
 * @author Alejandro Darío Simi
 * @copyright 2009 Alejandro Darío Simi
 * @license GPLv3
@@ -28,41 +28,44 @@
 *
 */
 
-#ifndef DROBJECT_DR_H_
-#define DROBJECT_DR_H_
+#ifndef DREXCEPTION_DR_H_
+#define DREXCEPTION_DR_H_
 
+#include <exception>
 #include <string>
-using namespace std;
+#include <nexttools/DRObject.dr.h>
 
 namespace dr {
+using namespace std;
 
 /**
-* class DRObject @todo documentar
-*/
-class DRObject {
-	public:
-		DRObject();
-		virtual ~DRObject();
+ * @class DRException This class representes an generic or unknown error
+ * thrown by a DRObject.
+ */
+class DRException : public exception, public DRObject {
+	protected:
+		string	__class__;
+		string	_what;
 
 	public:
-		/**
-		* Converts the object to a string.
-		* @return @todo documentar
-		*/
+		DRException(const string &what);
+		virtual ~DRException() throw() {};
+
+	public:
 		virtual string toString() const throw();
+		virtual const char* what() const throw();
 };
 
 /**
- * General Operators
- * @{
+ * @class DRSubclassResponsabily This class representes an generic or unknown error
+ * thrown by a DRObject.
  */
-ostream&	operator<<(ostream &out, const DRObject &obj);
-string&		operator+ (string  &str, const DRObject &obj);
-string&		operator+=(string  &str, const DRObject &obj);
-bool		operator==(const string   &str, const DRObject &obj);
-bool		operator==(const DRObject &obj, const string   &str);
-/** @} */
+class DRSubclassResponsabily : public DRException {
+	public:
+		DRSubclassResponsabily(const string &what);
+		virtual ~DRSubclassResponsabily() throw() {};
+};
 
 }
 
-#endif /* DROBJECT_DR_H_ */
+#endif /* DREXCEPTION_DR_H_ */

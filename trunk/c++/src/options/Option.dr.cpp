@@ -29,7 +29,7 @@
 */
 
 #include <Option.dr.h>
-#include <Debug.dr.h>
+#include <nexttools/Debug.dr.h>
 
 #include <map>
 #include <string>
@@ -39,7 +39,9 @@ using namespace std;
 using namespace dr;
 
 Option::Option() : DRObject() {
-	this->_needsMore = false;
+	this->_needsMore   = false;
+	this->_helpText    = "";
+	this->_helpTextFmt = "";
 
 	this->setName("");
 	this->setEnabled(true);
@@ -70,7 +72,16 @@ bool Option::check(string command) {
 
 	if(out) {
 		this->setActivated(true);
-		XDBG(como que active una opcion)
+	}
+
+	return out;
+}
+
+string Option::commands() {
+	string	out = "";
+
+	for(vector<string>::iterator i=this->_commands.begin(); i!=this->_commands.end(); i++) {
+		out+=string(out.length()?", ":"") + (*i);
 	}
 
 	return out;
@@ -88,11 +99,19 @@ bool Option::hasCommand(string command) {
 	return found;
 }
 
+string Option::help() const {
+	return this->_helpTextFmt;
+}
+
+string Option::helpText() const {
+	return this->_helpText;
+}
+
 string Option::name() const {
 	return this->_name;
 }
 
-bool Option::needsMore() {
+bool Option::needsMore() const {
 	return this->_needsMore;
 }
 
@@ -106,18 +125,57 @@ bool Option::setEnabled(bool enable) {
 	return this->enabled();
 }
 
+string Option::setHelpText(const string &text) {
+	this->_helpText    = text;
+
+	this->_helpTextFmt = string("\t") + this->commands() + string("\n");
+
+	this->wrapHelp(this->_helpTextFmt, text, 64);
+
+	return this->helpText();
+}
+
 string Option::setName(string name) {
 	this->_name = name;
 	return this->name();
 }
 
-string Option::value() {
+string Option::toString() const throw() {
+	return this->value();
+}
+
+string Option::value() const {
 	return "";
 }
 
-int Option::valueCollection(vector<string> &values) {
+int Option::valueCollection(vector<string> &values) const {
 	values.clear();
 	return 0;
+}
+
+void Option::wrapHelp(string &out, const string &in, const int length) const {
+	string	aux = in;
+
+	int	pos;
+
+	/*
+	 * Replacing TABs by spaces.
+	 */
+	pos = 0;
+	while((pos=aux.find('\t')) != string::npos) {
+		aux.replace(pos, 1, "        ");
+	}
+
+	/*
+	 * Padding.
+	 */
+	pos = 0;
+	while((pos=aux.find('\n', pos)) != string::npos) {
+		aux.replace(pos, 1, "\n\t\t");
+		pos++;
+	}
+
+	/*TODO*/out+=string("\t\t") + aux;
 }
 
 }

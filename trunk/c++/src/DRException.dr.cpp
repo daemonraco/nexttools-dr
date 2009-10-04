@@ -1,7 +1,7 @@
 /**
-* @file ValueOption.dr.cpp
+* @file DRException.dr.cpp
 *
-* @date 2009-06-15
+* @date 2009-09-27
 * @author Alejandro Darío Simi
 * @copyright 2009 Alejandro Darío Simi
 * @license GPLv3
@@ -28,48 +28,28 @@
 *
 */
 
-#include <ValueOption.dr.h>
-#include <Debug.dr.h>
+#include <nexttools/DRException.dr.h>
 
 namespace dr {
 using namespace dr;
+using namespace std;
 
-ValueOption::ValueOption() : Option() {
+DRException::DRException(const string &what) : exception(), DRObject() {
+	__class__ = "DRException";
+	this->_what = what;
+	this->what();
 }
 
-ValueOption::~ValueOption() {
+string DRException::toString() const throw() {
+	return __class__ + string(": ") + string(this->what());
 }
 
-bool ValueOption::check(string command) {
-	bool	out = true;
-
-	if(!this->needsMore()) {
-		if(out = this->hasCommand(command)) {
-			this->setActivated(true);
-			this->_needsMore = true;
-		}
-	} else {
-		this->_value = command;
-		this->_needsMore = false;
-	}
-
-	return out;
+const char* DRException::what() const throw() {
+	return this->_what.c_str();
 }
 
-string ValueOption::value() {
-	return this->_value;
-}
-
-int ValueOption::valueCollection(vector<string> &values) {
-	int	out = 0;
-	values.clear();
-	if(this->activated() && !this->needsMore()) {
-		values.push_back(this->value());
-		out = 1;
-	}
-	return out;
+DRSubclassResponsabily::DRSubclassResponsabily(const string &what) : DRException(what) {
+	__class__ = "DRSubclassResponsabily";
 }
 
 }
-
-/* The open source means to speak clearly.					*/

@@ -28,73 +28,82 @@
 *
 */
 
-#include <MultivalueOption.dr.h>
+#include <ValueOption.dr.h>
 #include <Debug.dr.h>
 
 namespace dr {
 using namespace dr;
 
-MultivalueOption::MultivalueOption() : Option() {
-	this->_value.clear();
+ValueOption::ValueOption() : Option() {
 }
 
-MultivalueOption::~MultivalueOption() {
+ValueOption::~ValueOption() {
 }
 
-bool MultivalueOption::check(string command) {
+bool ValueOption::check(string command) {
 	bool	out = true;
 
 	if(!this->needsMore()) {
-		if(out = this->hasCommand(command)) {
+		string	cmd;
+		string	prm;
+		bool	splitted;
+
+		splitted = this->splitCommand(command, cmd, prm);
+
+		if(out = this->hasCommand(cmd)) {
 			this->setActivated(true);
 			this->_needsMore = true;
+
+			if(splitted) {
+				this->check(prm);
+			}
 		}
 	} else {
-		vector<string>	auxV;
-		this->splitValues(command, auxV);
-		for(vector<string>::iterator i=auxV.begin(); i!=auxV.end(); i++) {
-			this->_value.push_back(*i);
-		}
+		this->_value     = command;
 		this->_needsMore = false;
 	}
 
 	return out;
 }
 
-bool MultivalueOption::setActivated(bool active) {
-	if(!active) {
-		this->_value.clear();
+string ValueOption::commands() {
+	string	out = "";
+
+	for(vector<string>::iterator i=this->_commands.begin(); i!=this->_commands.end(); i++) {
+		out+=string(out.length()?", ":"") + (*i) + string(" <value>");
 	}
-	return this->Option::setActivated(active);
+
+	return out;
 }
 
-void MultivalueOption::splitValues(const string &command, vector<string> &auxV) {
-	string::size_type	pos    = 0;
-	string::size_type	prepos = 0;
+bool ValueOption::splitCommand(const string &value, string &cmd, string &prm) const {
+	bool	out = false;
 
-	auxV.clear();
-	while(prepos != string::npos) {
-		pos = command.find(MULTIVALUEOPTION_SEPARATOR, prepos);
-		if(pos != string::npos) {
-			auxV.push_back(command.substr(prepos, pos-prepos));
-			prepos = pos + 1;
-			if(prepos >= command.length()) {
-				prepos = string::npos;
-			}
-		} else {
-			auxV.push_back(command.substr(prepos));
-			prepos = string::npos;
-		}
+	int	pos = value.rfind('=');
+	if(pos != string::npos) {
+		cmd = value.substr(0, pos);
+		prm = value.substr(pos+1);
+
+		out = true;
+	} else {
+		cmd = value;
 	}
+
+	return out;
 }
 
-string MultivalueOption::value() {
-	return "";
+string ValueOption::value() const {
+	return this->_value;
 }
 
-int MultivalueOption::valueCollection(vector<string> &values) {
-	values = this->_value;
-	return values.size();
+int ValueOption::valueCollection(vector<string> &values) const {
+	int	out = 0;
+	values.clear();
+	if(this->activated() && !this->needsMore()) {
+		values.push_back(this->value());
+		out = 1;
+	}
+	return out;
 }
 
 }

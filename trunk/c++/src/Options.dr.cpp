@@ -28,8 +28,7 @@
 *
 */
 
-#include <Options.dr.h>
-#include <Debug.dr.h>
+#include <nexttools/Options.dr.h>
 
 namespace dr {
 using namespace dr;
@@ -44,7 +43,12 @@ Options::~Options() {
 	delete this->_opts;
 }
 
-bool Options::addOption(string name) {
+bool Options::activated(const string &optionName) const {
+	Option*	opt = this->getOption(optionName);
+	return (opt && opt->activated());
+}
+
+bool Options::addOption(const string &name) {
 	bool	out = true;
 	Option*	opt = new Option();
 
@@ -56,7 +60,7 @@ bool Options::addOption(string name) {
 	return out;
 }
 
-bool Options::addOption(string name, Option* opt) {
+bool Options::addOption(const string &name, Option* opt) {
 	bool	out = true;
 
 	if(this->getOption(name) == NULL) {
@@ -69,7 +73,7 @@ bool Options::addOption(string name, Option* opt) {
 	return out;
 }
 
-bool Options::addOptionCommand(string optionName, string command) {
+bool Options::addOptionCommand(const string &optionName, const string &command) {
 	bool	out = true;
 	Option*	opt = this->getOption(optionName);
 
@@ -87,7 +91,6 @@ bool Options::check(int counter, char** params) {
 		this->_programName = params[0];
 		for(int i=1; i<counter; i++) {
 			this->checkCommand(params[i]);
-			XVDBG(params[i])
 		}
 	} else {
 		/**
@@ -97,7 +100,7 @@ bool Options::check(int counter, char** params) {
 	}
 }
 
-void Options::checkCommand(string command) {
+void Options::checkCommand(const string &command) {
 	bool	used = false;
 	for(OptionsMap::iterator i=this->_opts->begin(); !used && i!=this->_opts->end(); i++) {
 		if(i->second->enabled()) {
@@ -111,7 +114,7 @@ void Options::checkCommand(string command) {
 	}
 }
 
-Option* Options::getOption(string optionName) {
+Option* Options::getOption(const string &optionName) const {
 	Option*	out = NULL;
 
 	bool	found = false;
@@ -123,6 +126,26 @@ Option* Options::getOption(string optionName) {
 	}
 
 	return out;
+}
+
+string Options::help() const {
+	string	out = "";
+
+	string	aux = "";
+
+	for(OptionsMap::iterator i=this->_opts->begin(); i!=this->_opts->end(); i++) {
+		aux = i->second->help();
+		if(aux.length()) {
+			out+=aux + string("\n\n");
+		}
+	}
+
+	return out;
+}
+
+string Options::helpText(const string &optionName) const {
+	Option*	opt = this->getOption(optionName);
+	return (opt ? opt->helpText() : "");
 }
 
 bool Options::needsMore() const {
@@ -137,13 +160,22 @@ string Options::programName() {
 	return this->_programName;
 }
 
-string Options::value(string optionName) {
+string Options::setHelpText(const string &optionName, const string &text) {
+	Option*	opt = this->getOption(optionName);
+	return (opt ? opt->setHelpText(text) : "");
+}
+
+string Options::toString() const throw() {
+	return "dr::Options";
+}
+
+string Options::value(const string &optionName) {
 	Option*	out = this->getOption(optionName);
 
 	return (out ? out->value() : "");
 }
 
-int Options::valueCollection(string optionName, vector<string> &values) {
+int Options::valueCollection(const string &optionName, vector<string> &values) {
 	Option*	out = this->getOption(optionName);
 
 	return (out ? out->valueCollection(values) : -1);
